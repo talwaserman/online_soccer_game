@@ -79,6 +79,8 @@ button:focus {
 }
 #team_name,
 #team_name_comp,
+#team_1_name,
+#team_2_name,
 #c_score,
 #p_score {
   font-size: 25px;
