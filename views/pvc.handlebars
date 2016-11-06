@@ -1,0 +1,196 @@
+
+<body onload="startup()">
+	<div class="container-fluid">
+		<article class="row">
+			<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+				<div class="box">
+      				<label for="qty"><abbr  id="team_name_comp">Computer: </abbr></label>
+      				<label id="c_score" >0</label>
+			    </div>
+			</div>
+			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+				<img id="screen" src="images/stadium.jpg"/>
+			</div>
+			<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+				<div class="box">
+      				<label for="qty"><abbr id="team_name" >Team name: </abbr></label>
+      				<label id="p_score" >0</label>
+			    </div>
+			</div>
+		</article>
+
+
+
+
+		<article class="row">
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<!-- &nbsp; -->
+			</div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">  <!--P2-->
+    					<p id="cb1_c" >Centre Back1</p>
+      				<br />
+			    </div>
+			</div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">    <!--P2-->
+    					<p id="lm_c" >Left Mid fielder</p>
+      				<br />
+			    </div>
+			</div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<!-- &nbsp; -->
+			</div>
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+
+			</div>
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box"> <!--P1-->
+    					<p id="rm_p" >Centre Back1</p>
+      				<input type="button" onclick="select_player('rm_p');" value="Select">
+			    </div>
+			</div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+                  <div class="box"> <!--P1-->
+					<p id="rb_p" >Right Back</p>
+      				<input type="button" onclick="select_player('rb_p');" value="Select">
+			    </div>
+              </div>
+
+		</article>
+
+
+
+          <article class="row">
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<!-- &nbsp; -->
+			</div>
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box"> <!--P2-->
+    					<p id="lb_c" >Left Back</p>
+      				<br />
+			    </div>
+			</div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">    <!--P2-->
+    					<p id="cm1_c" >central Mid fielder1</p>
+      				<br />
+			    </div>
+			</div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">    <!--P2-->
+    					<p id="fw1_c" >Centre Forward1</p>
+      				<br />
+			    </div>
+			</div>
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">    <!--P1-->
+    					<p id="fw2_p" >Centre Forward2</p>
+      				<input type="button" onclick="select_player('fw2_p');" value="Select">
+			    </div>
+			</div>
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">    <!--P1-->
+    					<p id="cm1_p" >central Mid fielder1</p>
+      				<input type="button" onclick="select_player('cm1_p')" value="Select">
+			    </div>
+			</div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">    <!--P1-->
+					<p id="lb_p" >Left Back</p>
+      				<input type="button" onclick="select_player('lb_p');" value="Select">
+			    </div>
+			</div>
+		</article>
+
+
+          <article class="row">
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box"><!--P2-->
+    					<p id="gk_c" >Goal keeper</p>
+      				<br />
+			    </div>
+			</div>
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">  <!--P2-->
+    					<p id="cb2_c" >Centre Back2</p>
+      				<br />
+			    </div>
+			</div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">    <!--P2-->
+    					<p id="cm2_c" >central Mid fielder2</p>
+      				<br />
+			    </div>
+			</div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">    <!--P2-->
+    					<p id="fw2_c" >Centre Forward1</p>
+      				<br />
+			    </div>
+			</div>
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">    <!--P1-->
+    					<p id="fw1_p" >Centre Forward2</p>
+      				<input type="button" onclick="select_player('fw1_p');" value="Select">
+			    </div>
+			</div>
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">    <!--P1-->
+    					<p id="cm2_p" >central Mid fielder1</p>
+      				<input type="button" onclick="select_player('cm2_p')" value="Select">
+			    </div>
+			</div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">  <!--P2-->
+    					<p id="cb2_p" >Centre Back1</p>
+      				<input type="button" onclick="select_player('cb2_p');" value="Select">
+			    </div>
+			</div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">    <!--P1-->
+    					<p id="gk_p" >Goal keeper</p>
+      				<input type="button" onclick="select_player('gk_p');" value="Select">
+			    </div>
+			</div>
+		</article>
+
+
+
+          <article class="row">
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<!-- &nbsp; -->
+			</div>
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">  <!--P2-->
+    					<p id="rb_c" >Right Back</p>
+    					<br />
+			    </div>
+			</div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">    <!--P2-->
+    					<p id="rm_c" >Right Mid fielder</p>
+      				<br />
+			    </div>
+			</div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<!-- &nbsp; -->
+			</div>
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<!-- &nbsp; -->
+			</div>
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box">    <!--P1-->
+    					<p id="lm_p" >Left Mid fielder</p>
+      				<input type="button" onclick="select_player('lm_p');" value="Select">
+			    </div>
+			</div>
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
+				<div class="box"> <!--P1-->
+    					<p id="cb1_p" >Centre Back1</p>
+      				<input type="button" onclick="select_player('cb1_p');" value="Select">
+			    </div>
+			</div>
+		</article>
+	</div>
+</body>
