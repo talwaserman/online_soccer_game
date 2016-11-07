@@ -34,6 +34,9 @@ Instructions:
 4. there is another option to install heroku cli and do it from command prompt.
 ```
 
+## heroku documentation on how to initiate this application
+https://devcenter.heroku.com/articles/heroku-command-line
+
 Owner of this repository:
 Marty
 

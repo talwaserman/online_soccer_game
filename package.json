@@ -1,5 +1,5 @@
 {
-  "name": "online-game",
+  "name": "online-soccer-game",
   "version": "0.0.1",
   "private": true,
   "main": "app.js",
@@ -31,5 +31,8 @@
     "mocha": "^3.0.2",
     "nyc": "^8.1.0",
     "supertest": "^2.0.0"
+  },
+  "engines": {
+    "node": "5.11.1"
   }
 }
