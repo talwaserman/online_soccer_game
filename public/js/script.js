@@ -344,7 +344,7 @@ var TeamName = 'player: ';
 				if(Cwrong_selection_count==1)
 				{
 					document.getElementById('screen').src="images/"+yellow[Math.floor(Math.random() * yellow.length)];
-					document.getElementById("team_name_comp").style.color="red";
+					document.getElementById("team_name_comp").style.color="yellow";
 						//yellow card
 				}
 				else if(Cwrong_selection_count==2)
