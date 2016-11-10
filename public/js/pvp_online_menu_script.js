@@ -1,3 +1,4 @@
+
 function create_new_online_game() {
   $('.step_1_create_or_select').addClass('hidden');
   $('.step_2_create_game').removeClass('hidden');

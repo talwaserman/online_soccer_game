@@ -1,6 +1,7 @@
 
 
 var express = require('express');
+var io = require('socket.io');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -12,6 +13,10 @@ var routes = require('./routes/index');
 var users = require('./routes/user');
 
 var app = express();
+
+// Socket.io
+var io           = io();
+app.io           = io;
 
 var env = process.env.NODE_ENV || 'development';
 app.locals.ENV = env;
@@ -70,6 +75,11 @@ app.use(function(err, req, res, next) {
         error: {},
         title: 'error'
     });
+});
+
+
+io.on('connection', function(socket){
+  console.log('a user connected');
 });
 
 
