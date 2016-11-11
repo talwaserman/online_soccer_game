@@ -1,4 +1,6 @@
 
+//socket io vars
+ var connected_users = {};
 
 var express = require('express');
 var io = require('socket.io');
@@ -77,9 +79,70 @@ app.use(function(err, req, res, next) {
     });
 });
 
-
+//web sockets
 io.on('connection', function(socket){
-  console.log('a user connected');
+  connected_users[socket.id] = {};
+  connected_users[socket.id]['socket'] = socket;
+  console.log('a user connected!');
+  var allkeys = Object.keys(socket);
+  for (var i = 0; i < allkeys.length; i ++) {
+    console.log(allkeys[i] + ": " + socket[allkeys[i]]);
+  }
+  console.log('----client----');
+  var allkeys = Object.keys(socket.client);
+  for (var i = 0; i < allkeys.length; i ++) {
+    console.log(allkeys[i] + ": " + socket.client[allkeys[i]]);
+  }
+
+  console.log('----rooms----');
+  var allkeys = Object.keys(socket.rooms);
+  for (var i = 0; i < allkeys.length; i ++) {
+    console.log(allkeys[i] + ": " + socket.rooms[allkeys[i]]);
+  }
+
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+
+
+    console.log('----how many users connected: ----');
+    console.log('number: ' + Object.keys(connected_users).length);
+
+    io.to(connected_users[socket.id]['room']).emit('message', {
+      'message' : 'user_left_room',
+      'data': socket.id
+    });
+    delete connected_users[socket.id];
+
+  });
+
+  socket.on('create', function (room) {
+    socket.join(room);
+    console.log('room ' + room + ' was created.');
+    connected_users[socket.id]['room'] = room;
+    io.to(socket.id).emit('message', {
+      'message' : 'room_created',
+      'data': room
+    });
+  });
+
+  socket.on('join_room', function(room) {
+    connected_users[socket.id]['room'] = room;
+    io.to(socket.id).emit('message', {
+      'message' : 'join_room',
+      'data': room
+    });
+
+    // sending to all clients in 'game' room(channel) except sender
+    socket.broadcast.to(room).emit('message', {
+      'message' : 'player_joined',
+      'data': null
+    });
+
+  });
+
+  console.log('----how many users connected: ----');
+  console.log('number: ' + Object.keys(connected_users).length);
+
 });
 
 

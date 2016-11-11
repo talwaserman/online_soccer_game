@@ -2,6 +2,12 @@
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script>
   var socket = io();
+  socket.on('rooms_status', function(data) {
+    debugger;
+  });
+  socket.on('message', function(data) {
+    debugger;
+  });
 </script>
 <div class="online_pvp_container">
   <div class="step_1_create_or_select">
@@ -15,7 +21,7 @@
     <h1>Create a new game</h1>
     <p>Please enter the game name</p>
     <div class="input-group">
-      <input type="text" class="form-control">
+      <input type="text" class="form-control new_group_name">
     </div>
     <button class="btn btn-danger p-r" onclick="back_to_step_2()">back</button>
     <button class="btn btn-success" onclick="create_game_step_3()">create</button>
@@ -23,8 +29,8 @@
 
   <div class="step_2_join_game hidden">
     <h1>Join an open game</h1>
-    <p>Please select the game you want to join</p>
-    <ul class="games_to_join_list"></ul>
+    <p>Please enter the name of the game you want to join</p>
+    <input type="text" class="form-control join_group_name">
     <button class="btn btn-danger p-r" onclick="back_to_step_2()">back</button>
     <button class="btn btn-primary" onclick="select_game_to_join_step_3()">Join game</button>
   </div>
