@@ -70,10 +70,6 @@ button:focus {
   max-height: 70%;
 }
 #screen {
-  margin-left: 25%;
-  max-height: 100%;
-  max-width: 100%;
-  border-width: 2px;
   border-color: blue;
   border-radius: 20px;
 }
@@ -102,10 +98,6 @@ button:focus {
 }
 .online_pvp_container button.p-r {
   margin-right: 10px;
-}
-.online_pvp_container .input-group {
-  width: 324px;
-  margin: 20px auto;
 }
 .online_pvp_container .input-group input {
   border-radius: 5px !important;
@@ -148,6 +140,17 @@ footer {
 footer ul {
   list-style-type: none;
 }
+.game-name-container {
+  text-align: center;
+  font-size: 41px;
+  color: #fff;
+}
 .hidden {
   display: none;
+}
+.center-elm {
+  margin: 0 auto 13px auto;
+}
+.t-l {
+  text-align: left;
 }

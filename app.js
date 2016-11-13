@@ -115,27 +115,30 @@ io.on('connection', function(socket){
 
   });
 
-  socket.on('create', function (room) {
-    socket.join(room);
-    console.log('room ' + room + ' was created.');
-    connected_users[socket.id]['room'] = room;
+  socket.on('create', function (gameInfo) {
+    socket.join(gameInfo.gameName);
+    console.log('room ' + gameInfo.gameName + ' was created.');
+    connected_users[socket.id]['room'] = gameInfo.gameName;
+    connected_users[socket.id]['playerName'] = gameInfo.playerName
     io.to(socket.id).emit('message', {
       'message' : 'room_created',
-      'data': room
+      'data': gameInfo
     });
   });
 
-  socket.on('join_room', function(room) {
-    connected_users[socket.id]['room'] = room;
+  socket.on('join_room', function(gameInfo) {
+    socket.join(gameInfo.gameName);
+    connected_users[socket.id]['room'] = gameInfo.gameName;
+    connected_users[socket.id]['playerName'] = gameInfo.playerName
     io.to(socket.id).emit('message', {
       'message' : 'join_room',
-      'data': room
+      'data': gameInfo
     });
 
     // sending to all clients in 'game' room(channel) except sender
-    socket.broadcast.to(room).emit('message', {
+    socket.broadcast.to(gameInfo.gameName).emit('message', {
       'message' : 'player_joined',
-      'data': null
+      'data': gameInfo
     });
 
   });

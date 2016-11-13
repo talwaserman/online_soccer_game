@@ -365,12 +365,12 @@ var team_2_name = 'team 2: ';
 	};
 
 	//called on load of body
-	function startup() {
-		team_1_name = prompt("Please enter the name of team 1", "");
-		if (!team_1_name) { team_1_name = 'team 1 '}
-		$('#team_1_name').text(team_1_name +': ');
-
-		team_2_name = prompt("Please enter the name of team 2", "");
-		if (!team_2_name) { team_2_name = 'team 2 '}
-		$('#team_2_name').text(team_2_name +': ');
-	};
+	// function startup() {
+	// 	team_1_name = prompt("Please enter the name of team 1", "");
+	// 	if (!team_1_name) { team_1_name = 'team 1 '}
+	// 	$('#team_1_name').text(team_1_name +': ');
+	//
+	// 	team_2_name = prompt("Please enter the name of team 2", "");
+	// 	if (!team_2_name) { team_2_name = 'team 2 '}
+	// 	$('#team_2_name').text(team_2_name +': ');
+	// };
