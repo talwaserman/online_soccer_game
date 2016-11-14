@@ -1,6 +1,7 @@
 
 //socket io vars
  var connected_users = {};
+ var rooms = {};
 
 var express = require('express');
 var io = require('socket.io');
@@ -107,6 +108,8 @@ io.on('connection', function(socket){
     console.log('----how many users connected: ----');
     console.log('number: ' + Object.keys(connected_users).length);
 
+    delete rooms[connected_users[socket.id]['room']];
+
     io.to(connected_users[socket.id]['room']).emit('message', {
       'message' : 'user_left_room',
       'data': socket.id
@@ -116,8 +119,14 @@ io.on('connection', function(socket){
   });
 
   socket.on('create', function (gameInfo) {
+    //TODO: check that the room is not taken and return a proper message
+
     socket.join(gameInfo.gameName);
     console.log('room ' + gameInfo.gameName + ' was created.');
+
+    rooms[gameInfo.gameName] = {};
+    rooms[gameInfo.gameName]["player1"] = gameInfo.playerName;
+
     connected_users[socket.id]['room'] = gameInfo.gameName;
     connected_users[socket.id]['playerName'] = gameInfo.playerName
     io.to(socket.id).emit('message', {
@@ -127,9 +136,16 @@ io.on('connection', function(socket){
   });
 
   socket.on('join_room', function(gameInfo) {
+    //TODO: check that the room is not already with two players
+    // and return the proper message
+
     socket.join(gameInfo.gameName);
     connected_users[socket.id]['room'] = gameInfo.gameName;
-    connected_users[socket.id]['playerName'] = gameInfo.playerName
+    connected_users[socket.id]['playerName'] = gameInfo.playerName;
+
+    rooms[gameInfo.gameName]["player2"] = gameInfo.playerName;
+
+    gameInfo.player2Name = rooms[gameInfo.gameName]["player1"];
     io.to(socket.id).emit('message', {
       'message' : 'join_room',
       'data': gameInfo
@@ -141,6 +157,20 @@ io.on('connection', function(socket){
       'data': gameInfo
     });
 
+  });
+
+  socket.on('player_move', function(player_name) {
+    socket.broadcast.to(connected_users[socket.id]['room']).emit('message', {
+      'message' : 'player_move',
+      'data': player_name
+    });
+  });
+
+  socket.on('update_score', function(score_data) {
+    socket.broadcast.to(connected_users[socket.id]['room']).emit('message', {
+      'message' : 'update_score',
+      'data': score_data
+    });
   });
 
   console.log('----how many users connected: ----');

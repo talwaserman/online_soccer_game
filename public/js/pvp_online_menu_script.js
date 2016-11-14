@@ -15,13 +15,11 @@ var selecter_players = [];
 var team_1_name = 'team 1: ';
 var team_2_name = 'team 2: ';
 var game_name = 'The best game ever';
-
 /* ---------------------------- */
 
 
 
 /* SOCKET IO - real time communication */
-
 var socket = io();
 socket.on('rooms_status', function(data) {
   debugger;
@@ -29,25 +27,56 @@ socket.on('rooms_status', function(data) {
 socket.on('message', function(info) {
   switch(info.message) {
 		case 'room_created':
-		case 'join_room':
 			team_1_name = info.data.playerName;
 			game_name   = info.data.gameName;
 
 			$('.game-name-value').text(game_name);
-			$('#team_1_name').text(team_1_name);
+			$('#team_1_name').text(team_1_name + ':');
+
+			$('.waiting-wrapper-overlay').removeClass('hidden');
 			$('.online_pvp_container').addClass('hidden');
 			$('.start_game_container').removeClass('hidden');
+			$('.player_2_input_btn').addClass('hidden');
+		break;
+
+		case 'join_room':
+			team_1_name = info.data.playerName;
+			team_2_name = info.data.player2Name;
+			game_name   = info.data.gameName;
+
+			$('.game-name-value').text(game_name);
+			$('#team_1_name').text(team_1_name + ':');
+			$('#team_2_name').text(team_2_name + ':');
+			$('.online_pvp_container').addClass('hidden');
+			$('.start_game_container').removeClass('hidden');
+			$('.player_1_input_btn').addClass('hidden');
 		break;
 
 		case 'player_joined':
 			team_2_name = info.data.playerName;
 			alert('player ' + team_2_name + ' joined the game.');
-			$('#team_2_name').text(team_2_name);
+			$('#team_2_name').text(team_2_name + ':');
+			$('.waiting-wrapper-overlay').addClass('hidden');
 		break;
 
 		case 'user_left_room':
 			alert('the other player left the game, you win!');
 			location.replace('/');
+		break;
+
+    case 'player_move':
+			select_player2(info.data);
+    break;
+
+		case 'update_score':
+			$(info.data.selector).text(info.data.newScore);
+		break;
+
+		case 'player_won':
+			var x=prompt("You Lost","Thanks for playing");
+			if( (x === "") || (x!== "" )) {
+				location.replace('/');
+			}
 		break;
 	}
 });
@@ -70,7 +99,6 @@ function back_to_step_2() {
 };
 
 function create_game_step_3() {
-	debugger;
   //create a room and join it.
 	var $createGame = $('.step_2_create_game');
   socket.emit('create', {
@@ -80,7 +108,6 @@ function create_game_step_3() {
 };
 
 function select_game_to_join_step_3() {
-	debugger;
   // join existing room
 	var $joinGame = $('.step_2_join_game');
   socket.emit('join_room', {
@@ -188,9 +215,9 @@ function select_game_to_join_step_3() {
 
 	function select_player(player_name) {
 		var Midfielders_flag=false;
-		var player, choice;
+		var player, choice, newScore;
 
-		// check that it is the player turn and not the computer's turns
+		// check that it is the player turn and not the other player's turns
 		if (Whos_turn !== 'player') {
 			Pwrong_selection_count++;
 			return;
@@ -266,7 +293,14 @@ function select_game_to_join_step_3() {
 				}
 			} else {//good player
 				$('#screen').attr('src', 'images/g1.jpg');
-				$('#p_score').text(1 + parseInt($('#p_score').text()));
+				newScore = 1 + parseInt($('#p_score').text());
+				$('#p_score').text(newScore);
+
+				//update the other player of the new score
+				socket.emit('update_score', {
+					'selector': '#c_score',
+					'newScore': newScore
+				});
 			}
 
 			$('#' + player_name).css({
@@ -278,8 +312,13 @@ function select_game_to_join_step_3() {
 			$('.box.player_team input').prop('disabled', true).addClass('disabled-button');
 			$('.box.computer_team input').prop('disabled', false).removeClass('disabled-button');
 
+      // sending to all clients in 'game' room(channel) except sender
+			// the move that this player made
+      socket.emit('player_move', player_name);
+
 			setTimeout(function()
 			{
+				//TODO: report this switch to the other player
 				$('#' + player_name).text(switchRandomPlayer(player, $('#' + player_name).text()))
 				$('#' + player_name).css({
 					'color': 'white',
@@ -290,9 +329,9 @@ function select_game_to_join_step_3() {
 	}; //select_player end
 
 
-	function select_computer(player_name) {
+	function select_player2(player_name) {
 		var Midfielders_flag=false;
-		var player, choice;
+		var player, choice, newScore;
 
 		// notify the program that it's the computer's turn.
 		Whos_turn = 'computer';
@@ -343,9 +382,9 @@ function select_game_to_join_step_3() {
 				}
 
 			} else {
-				gamewon_comp();
+				//gamewon_comp();
 			}
-		} else if(choice==(player[player.length-1])) {//bad player
+		} else if(choice === (player[player.length-1])) {//bad player
 			Cwrong_selection_count++;
 			if(Cwrong_selection_count === 1) {
 				document.getElementById('screen').src="images/"+yellow[Math.floor(Math.random() * yellow.length)];
@@ -388,7 +427,14 @@ function select_game_to_join_step_3() {
 		} else {
 			//good player
 			$('#screen').attr('src', 'images/g1.jpg');
-			$('#c_score').text(1 + parseInt($('#c_score').text()));
+			newScore = 1 + parseInt($('#c_score').text());
+			$('#c_score').text(newScore);
+
+			//update the other player of the new score
+			socket.emit('update_score', {
+				'selector': '#p_score',
+				'newScore': newScore
+			});
 		}
 
 		$('#' + player_name).css({
@@ -412,9 +458,10 @@ function select_game_to_join_step_3() {
 			$('.box.computer_team input').prop('disabled', true).addClass('disabled-button');
 
 		},1000);
-	}; //select_computer end
+	}; //select_player2 end
 
 	function gameover(name) {
+		debugger;
 		setTimeout(function()
 		{
 			alert("Game lost by " + name + ", Thanks for playing!");
@@ -427,27 +474,22 @@ function select_game_to_join_step_3() {
 		setTimeout(function() {
 			var x=prompt("You won","Thanks for playing");
 			if( (x === "") || (x!== "" )) {
-				location.reload();
+
+	      socket.broadcast.to(game_name).emit('message', {
+	        'message' : 'player_won',
+	        'data': 'player_won'
+	      });
+
+				location.replace('/');
 			}
 		},2000);
 	};
 
-	function gamewon_comp() {
-		setTimeout(function() {
-			var x=prompt("Computer won","Thanks for playing");
-			if((x === "") || (x!=="")) {
-				location.reload();
-			}
-		},2000);
-	};
-
-	//called on load of body
-	// function startup() {
-	// 	team_1_name = prompt("Please enter the name of team 1", "");
-	// 	if (!team_1_name) { team_1_name = 'team 1 '}
-	// 	$('#team_1_name').text(team_1_name +': ');
-	//
-	// 	team_2_name = prompt("Please enter the name of team 2", "");
-	// 	if (!team_2_name) { team_2_name = 'team 2 '}
-	// 	$('#team_2_name').text(team_2_name +': ');
+	// function gamewon_comp() {
+	// 	setTimeout(function() {
+	// 		var x=prompt("Computer won","Thanks for playing");
+	// 		if((x === "") || (x!=="")) {
+	// 			location.reload();
+	// 		}
+	// 	},2000);
 	// };

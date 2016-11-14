@@ -1,15 +1,6 @@
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script type="text/javascript" src="/js/pvp_online_menu_script.js"></script>
 
-<!-- <script>
-  var socket = io();
-  socket.on('rooms_status', function(data) {
-    debugger;
-  });
-  socket.on('message', function(data) {
-    debugger;
-  });
-</script> -->
 <div class="online_pvp_container">
   <div class="step_1_create_or_select">
     <h1>Welcome to online pvp!</h1>
@@ -78,13 +69,13 @@
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">  <!--P2-->
   					<p id="cb1_c" >Centre Back1</p>
-    				<input type="button" onclick="select_computer('cb1_c');" value="Select">
+    				<input class="player_2_input_btn" type="button" onclick="select_player2('cb1_c');" value="Select">
 		    </div>
 		</div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">    <!--P2-->
   					<p id="lm_c" >Left Mid fielder</p>
-    				<input type="button" onclick="select_computer('lm_c');" value="Select">
+    				<input class="player_2_input_btn" type="button" onclick="select_player2('lm_c');" value="Select">
 		    </div>
 		</div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
@@ -96,13 +87,13 @@
 		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box"> <!--P1-->
   					<p id="rm_p" >Centre Back1</p>
-    				<input type="button" onclick="select_player('rm_p');" value="Select">
+    				<input class="player_1_input_btn" type="button" onclick="select_player('rm_p');" value="Select">
 		    </div>
 		</div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
                 <div class="box"> <!--P1-->
 				<p id="rb_p" >Right Back</p>
-    				<input type="button" onclick="select_player('rb_p');" value="Select">
+    				<input class="player_1_input_btn" type="button" onclick="select_player('rb_p');" value="Select">
 		    </div>
             </div>
 
@@ -117,37 +108,37 @@
 		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box"> <!--P2-->
   					<p id="lb_c" >Left Back</p>
-    				<input type="button" onclick="select_computer('lb_c');" value="Select">
+    				<input class="player_2_input_btn" type="button" onclick="select_player2('lb_c');" value="Select">
 		    </div>
 		</div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">    <!--P2-->
   					<p id="cm1_c" >central Mid fielder1</p>
-    				<input type="button" onclick="select_computer('cm1_c');" value="Select">
+    				<input class="player_2_input_btn" type="button" onclick="select_player2('cm1_c');" value="Select">
 		    </div>
 		</div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">    <!--P2-->
   					<p id="fw1_c" >Centre Forward1</p>
-    				<input type="button" onclick="select_computer('fw1_c');" value="Select">
+    				<input class="player_2_input_btn" type="button" onclick="select_player2('fw1_c');" value="Select">
 		    </div>
 		</div>
 		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">    <!--P1-->
   					<p id="fw2_p" >Centre Forward2</p>
-    				<input type="button" onclick="select_player('fw2_p');" value="Select">
+    				<input class="player_1_input_btn" type="button" onclick="select_player('fw2_p');" value="Select">
 		    </div>
 		</div>
 		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">    <!--P1-->
   					<p id="cm1_p" >central Mid fielder1</p>
-    				<input type="button" onclick="select_player('cm1_p')" value="Select">
+    				<input class="player_1_input_btn" type="button" onclick="select_player('cm1_p')" value="Select">
 		    </div>
 		</div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">    <!--P1-->
 				<p id="lb_p" >Left Back</p>
-    				<input type="button" onclick="select_player('lb_p');" value="Select">
+    				<input class="player_1_input_btn" type="button" onclick="select_player('lb_p');" value="Select">
 		    </div>
 		</div>
 	</article>
@@ -157,49 +148,49 @@
 		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box"><!--P2-->
   					<p id="gk_c" >Goal keeper</p>
-    				<input type="button" onclick="select_computer('gk_c');" value="Select">
+    				<input class="player_2_input_btn" type="button" onclick="select_player2('gk_c');" value="Select">
 		    </div>
 		</div>
 		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">  <!--P2-->
   					<p id="cb2_c" >Centre Back2</p>
-    				<input type="button" onclick="select_computer('cb2_c');" value="Select">
+    				<input class="player_2_input_btn" type="button" onclick="select_player2('cb2_c');" value="Select">
 		    </div>
 		</div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">    <!--P2-->
   					<p id="cm2_c" >central Mid fielder2</p>
-    				<input type="button" onclick="select_computer('cm2_c');" value="Select">
+    				<input class="player_2_input_btn" type="button" onclick="select_player2('cm2_c');" value="Select">
 		    </div>
 		</div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">    <!--P2-->
   					<p id="fw2_c" >Centre Forward1</p>
-    				<input type="button" onclick="select_computer('fw2_c');" value="Select">
+    				<input class="player_2_input_btn" type="button" onclick="select_player2('fw2_c');" value="Select">
 		    </div>
 		</div>
 		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">    <!--P1-->
   					<p id="fw1_p" >Centre Forward2</p>
-    				<input type="button" onclick="select_player('fw1_p');" value="Select">
+    				<input class="player_1_input_btn" type="button" onclick="select_player('fw1_p');" value="Select">
 		    </div>
 		</div>
 		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">    <!--P1-->
   					<p id="cm2_p" >central Mid fielder1</p>
-    				<input type="button" onclick="select_player('cm2_p')" value="Select">
+    				<input class="player_1_input_btn" type="button" onclick="select_player('cm2_p')" value="Select">
 		    </div>
 		</div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">  <!--P2-->
   					<p id="cb2_p" >Centre Back1</p>
-    				<input type="button" onclick="select_player('cb2_p');" value="Select">
+    				<input class="player_1_input_btn" type="button" onclick="select_player('cb2_p');" value="Select">
 		    </div>
 		</div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">    <!--P1-->
   					<p id="gk_p" >Goal keeper</p>
-    				<input type="button" onclick="select_player('gk_p');" value="Select">
+    				<input class="player_1_input_btn" type="button" onclick="select_player('gk_p');" value="Select">
 		    </div>
 		</div>
 	</article>
@@ -213,13 +204,13 @@
 		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">  <!--P2-->
   					<p id="rb_c" >Right Back</p>
-  					<input type="button" onclick="select_computer('rb_c');" value="Select">
+  					<input class="player_2_input_btn" type="button" onclick="select_player2('rb_c');" value="Select">
 		    </div>
 		</div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">    <!--P2-->
   					<p id="rm_c" >Right Mid fielder</p>
-    				<input type="button" onclick="select_computer('rm_c');" value="Select">
+    				<input class="player_2_input_btn" type="button" onclick="select_player2('rm_c');" value="Select">
 		    </div>
 		</div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
@@ -231,14 +222,20 @@
 		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box">    <!--P1-->
   					<p id="lm_p" >Left Mid fielder</p>
-    				<input type="button" onclick="select_player('lm_p');" value="Select">
+    				<input class="player_1_input_btn" type="button" onclick="select_player('lm_p');" value="Select">
 		    </div>
 		</div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="width: 12.499999995%">
 			<div class="box"> <!--P1-->
   					<p id="cb1_p" >Centre Back1</p>
-    				<input type="button" onclick="select_player('cb1_p');" value="Select">
+    				<input class="player_1_input_btn" type="button" onclick="select_player('cb1_p');" value="Select">
 		    </div>
 		</div>
 	</article>
+</div>
+
+<div class="waiting-wrapper-overlay hidden">
+  <div class="waiting-for-other-player">
+    <strong>Waiting for other player to connect.</strong>
+  </div>
 </div>

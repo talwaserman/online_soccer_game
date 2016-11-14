@@ -53,6 +53,7 @@ button:focus {
 }
 .box {
   /* basics */
+  padding: 12px 4px 2px 4px;
   background-color: #444;
   color: #fff;
   background-color: transparent;
@@ -153,4 +154,17 @@ footer ul {
 }
 .t-l {
   text-align: left;
+}
+.waiting-wrapper-overlay {
+  background: rgba(255, 255, 255, 0.7);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  text-align: center;
+}
+.waiting-wrapper-overlay .waiting-for-other-player {
+  font-size: 35px;
+  line-height: 410px;
 }
