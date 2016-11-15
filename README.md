@@ -32,6 +32,7 @@ Instructions:
 2. go to your heroku account.
 3. redeploy your application.
 4. there is another option to install heroku cli and do it from command prompt.
+5. *** so from command prompt you just use: git push heroku
 ```
 
 ## heroku documentation on how to initiate this application
