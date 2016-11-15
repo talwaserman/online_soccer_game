@@ -15,6 +15,7 @@ var selecter_players = [];
 var team_1_name = 'team 1: ';
 var team_2_name = 'team 2: ';
 var game_name = 'The best game ever';
+var update_other_player = true;
 /* ---------------------------- */
 
 
@@ -27,6 +28,8 @@ socket.on('rooms_status', function(data) {
 socket.on('message', function(info) {
   switch(info.message) {
 		case 'room_created':
+			loaddata();
+
 			team_1_name = info.data.playerName;
 			game_name   = info.data.gameName;
 
@@ -40,6 +43,8 @@ socket.on('message', function(info) {
 		break;
 
 		case 'join_room':
+			loaddata();
+
 			team_1_name = info.data.playerName;
 			team_2_name = info.data.player2Name;
 			game_name   = info.data.gameName;
@@ -65,7 +70,8 @@ socket.on('message', function(info) {
 		break;
 
     case 'player_move':
-			select_player2(info.data);
+			update_other_player = false;
+			(info.data.split("_")[1] === 'p') ? select_player(info.data) : select_player2(info.data);
     break;
 
 		case 'update_score':
@@ -314,7 +320,11 @@ function select_game_to_join_step_3() {
 
       // sending to all clients in 'game' room(channel) except sender
 			// the move that this player made
-      socket.emit('player_move', player_name);
+      if (update_other_player) {
+				socket.emit('player_move', player_name);
+			} else {
+				update_other_player = true;
+			}
 
 			setTimeout(function()
 			{
@@ -441,6 +451,14 @@ function select_game_to_join_step_3() {
 			'color': 'yellow',
 			'font-size': '1.5em'
 		});
+
+		// sending to all clients in 'game' room(channel) except sender
+		// the move that this player made
+		if (update_other_player) {
+			socket.emit('player_move', player_name);
+		} else {
+			update_other_player = true;
+		}
 
 		setTimeout(function()
 		{
