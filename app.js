@@ -136,26 +136,37 @@ io.on('connection', function(socket){
   });
 
   socket.on('join_room', function(gameInfo) {
-    //TODO: check that the room is not already with two players
-    // and return the proper message
 
-    socket.join(gameInfo.gameName);
-    connected_users[socket.id]['room'] = gameInfo.gameName;
-    connected_users[socket.id]['playerName'] = gameInfo.playerName;
-    rooms[gameInfo.gameName]['player2'] = gameInfo.playerName;
-    gameInfo.player2Name = rooms[gameInfo.gameName]['player1'];
-    gameInfo.playersList = rooms[gameInfo.gameName]['playersList'];
-    io.to(socket.id).emit('message', {
-      'message' : 'join_room',
-      'data': gameInfo
-    });
+    if (!rooms[gameInfo.gameName]) {
+      // no room with that name
+      io.to(socket.id).emit('message', {
+        'message' : 'no_room_available',
+        'data': null
+      });
+    } else if ((!!rooms[gameInfo.gameName]['player1']) && (!!rooms[gameInfo.gameName]['player2'])) {
+      // you can't join this game, only two players allowd
+      io.to(socket.id).emit('message', {
+        'message' : 'only_2_players',
+        'data': null
+      });
+    } else {
+      socket.join(gameInfo.gameName);
+      connected_users[socket.id]['room'] = gameInfo.gameName;
+      connected_users[socket.id]['playerName'] = gameInfo.playerName;
+      rooms[gameInfo.gameName]['player2'] = gameInfo.playerName;
+      gameInfo.player2Name = rooms[gameInfo.gameName]['player1'];
+      gameInfo.playersList = rooms[gameInfo.gameName]['playersList'];
+      io.to(socket.id).emit('message', {
+        'message' : 'join_room',
+        'data': gameInfo
+      });
 
-    // sending to all clients in 'game' room(channel) except sender
-    socket.broadcast.to(gameInfo.gameName).emit('message', {
-      'message' : 'player_joined',
-      'data': gameInfo
-    });
-
+      // sending to all clients in 'game' room(channel) except sender
+      socket.broadcast.to(gameInfo.gameName).emit('message', {
+        'message' : 'player_joined',
+        'data': gameInfo
+      });
+    }
   });
 
   socket.on('player_move', function(player_name) {

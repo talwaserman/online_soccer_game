@@ -76,14 +76,20 @@ socket.on('message', function(info) {
 		break;
 
     case 'player_move':
-		debugger;
 			update_other_player = false;
 			(info.data.split("_")[1] === 'p') ? select_player(info.data) : select_player2(info.data);
     break;
 
 		case 'player_switch':
-		debugger;
 			$('#' + info.data.selector).text(info.data.newName);
+		break;
+
+		case 'no_room_available':
+			alert('there is no game with that name, please try a diffrent name or create a game');
+		break;
+
+		case 'only_2_players':
+			alert('this game is already played by two other players, try a diffrent name');
 		break;
 
 		case 'update_score':
