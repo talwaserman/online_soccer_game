@@ -165,6 +165,13 @@ io.on('connection', function(socket){
     });
   });
 
+  socket.on('player_switch', function(data) {
+    socket.broadcast.to(connected_users[socket.id]['room']).emit('message', {
+      'message' : 'player_switch',
+      'data': data
+    });
+  });
+
   socket.on('players_allocation', function(gameInfo) {
     console.log('players_allocation called: ' + gameInfo.gameName);
     rooms[gameInfo.gameName]['playersList'] = gameInfo.playersList;

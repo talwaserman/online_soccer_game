@@ -27,7 +27,6 @@ var playersList = {};	// used to save the list of players randomly generated for
 /* SOCKET IO - real time communication */
 var socket = io();
 socket.on('rooms_status', function(data) {
-  debugger;
 });
 socket.on('message', function(info) {
   switch(info.message) {
@@ -52,7 +51,6 @@ socket.on('message', function(info) {
 			team_2_name = info.data.player2Name;
 			gameName   = info.data.gameName;
 			is_creator = false;
-			debugger;
 			playersList = info.data.playersList;
 
 			loaddata();
@@ -81,6 +79,11 @@ socket.on('message', function(info) {
 			update_other_player = false;
 			(info.data.split("_")[1] === 'p') ? select_player(info.data) : select_player2(info.data);
     break;
+
+		case 'player_switch':
+		debugger;
+			$('#' + info.data.selector).text(info.data.newName);
+		break;
 
 		case 'update_score':
 			$(info.data.selector).text(info.data.newScore);
@@ -245,7 +248,6 @@ function select_game_to_join_step_3() {
 	}//loaddata end
 
 	function player_allocation() {
-		debugger;
 		var comp=["rb_c","cb1_c","cb2_c","lb_c","rm_c","cm1_c","cm2_c","lm_c","fw1_c","fw2_c","gk_c"];
 		var players=["rb_p","cb1_p","cb2_p","lb_p","rm_p","cm1_p","cm2_p","lm_p","fw1_p","fw2_p","gk_p"];
 
@@ -369,14 +371,21 @@ function select_game_to_join_step_3() {
 
 			setTimeout(function()
 			{
-				//TODO: report this switch to the other player
-				$('#' + player_name).text(switchRandomPlayer(player, $('#' + player_name).text()))
+				var newPlayerName = switchRandomPlayer(player, $('#' + player_name).text());
+				$('#' + player_name).text(newPlayerName);
 				$('#' + player_name).css({
 					'color': 'white',
 					'font-size': '1.0em'
 				});
 				$('#screen').attr('src', 'images/stadium.jpg');
+
+				socket.emit('player_switch', {
+					'selector': player_name,
+					'newName': newPlayerName
+				});
+
 			},1000);
+
 	}; //select_player end
 
 
@@ -520,7 +529,6 @@ function select_game_to_join_step_3() {
 	}; //select_player2 end
 
 	function gameover(name) {
-		debugger;
 		setTimeout(function()
 		{
 			alert("Game lost by " + name + ", Thanks for playing!");
