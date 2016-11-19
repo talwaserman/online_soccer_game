@@ -47,8 +47,8 @@ socket.on('message', function(info) {
 		break;
 
 		case 'join_room':
-			team_1_name = info.data.playerName;
-			team_2_name = info.data.player2Name;
+			team_1_name = info.data.player2Name;
+			team_2_name = info.data.playerName;
 			gameName   = info.data.gameName;
 			is_creator = false;
 			playersList = info.data.playersList;
@@ -71,11 +71,12 @@ socket.on('message', function(info) {
 		break;
 
 		case 'user_left_room':
-			alert('the other player left the game, you win!');
+			alert('the other player lost, you win!');
 			location.replace('/');
 		break;
 
     case 'player_move':
+		debugger;
 			update_other_player = false;
 			(info.data.split("_")[1] === 'p') ? select_player(info.data) : select_player2(info.data);
     break;
@@ -344,12 +345,6 @@ function select_game_to_join_step_3() {
 				$('#screen').attr('src', 'images/g1.jpg');
 				newScore = 1 + parseInt($('#p_score').text());
 				$('#p_score').text(newScore);
-
-				//update the other player of the new score
-				socket.emit('update_score', {
-					'selector': '#c_score',
-					'newScore': newScore
-				});
 			}
 
 			$('#' + player_name).css({
@@ -489,12 +484,6 @@ function select_game_to_join_step_3() {
 			$('#screen').attr('src', 'images/g1.jpg');
 			newScore = 1 + parseInt($('#c_score').text());
 			$('#c_score').text(newScore);
-
-			//update the other player of the new score
-			socket.emit('update_score', {
-				'selector': '#p_score',
-				'newScore': newScore
-			});
 		}
 
 		$('#' + player_name).css({
@@ -532,7 +521,7 @@ function select_game_to_join_step_3() {
 		setTimeout(function()
 		{
 			alert("Game lost by " + name + ", Thanks for playing!");
-			location.reload();
+			location.replace('/');
 
 		},2000);
 	};
