@@ -14,8 +14,12 @@ var Whos_turn = 'player';
 var selecter_players = [];
 var team_1_name = 'team 1: ';
 var team_2_name = 'team 2: ';
-var game_name = 'The best game ever';
-var update_other_player = true;
+var gameName = 'The best game ever';
+var update_other_player = true;	// tell the game if the other player should be notified of the move via socker io
+var is_creator = null;	// tell the game if the user is the creator or a joiner
+var playersList = {};	// used to save the list of players randomly generated for this game
+	  playersList.player1 = [];
+		playersList.player2 = [];
 /* ---------------------------- */
 
 
@@ -28,12 +32,13 @@ socket.on('rooms_status', function(data) {
 socket.on('message', function(info) {
   switch(info.message) {
 		case 'room_created':
+			team_1_name = info.data.playerName;
+			gameName   = info.data.gameName;
+			is_creator = true;
+
 			loaddata();
 
-			team_1_name = info.data.playerName;
-			game_name   = info.data.gameName;
-
-			$('.game-name-value').text(game_name);
+			$('.game-name-value').text(gameName);
 			$('#team_1_name').text(team_1_name + ':');
 
 			$('.waiting-wrapper-overlay').removeClass('hidden');
@@ -43,13 +48,16 @@ socket.on('message', function(info) {
 		break;
 
 		case 'join_room':
-			loaddata();
-
 			team_1_name = info.data.playerName;
 			team_2_name = info.data.player2Name;
-			game_name   = info.data.gameName;
+			gameName   = info.data.gameName;
+			is_creator = false;
+			debugger;
+			playersList = info.data.playersList;
 
-			$('.game-name-value').text(game_name);
+			loaddata();
+
+			$('.game-name-value').text(gameName);
 			$('#team_1_name').text(team_1_name + ':');
 			$('#team_2_name').text(team_2_name + ':');
 			$('.online_pvp_container').addClass('hidden');
@@ -125,7 +133,6 @@ function select_game_to_join_step_3() {
 /* -------------------------------------------------------------- */
 
 	$(document).ready(function() {
-		// loaddata();
 	});
 
 	function getRandomPlayer(player) {
@@ -152,7 +159,9 @@ function select_game_to_join_step_3() {
 	};
 
 	function loadPlayersHelper(player_name, player_or_computer) {
-		var player, x;
+		var player, x, randomPlayer;
+
+		// computer is actually player2
 
 		if (player_or_computer === 'player') {
 			x = 'p';
@@ -184,11 +193,19 @@ function select_game_to_join_step_3() {
 				break;
 		}
 
-		(player_name === ("lb_" + x)) ? $('#' + player_name).text("Ian Culverhouse") : $('#' + player_name).text(getRandomPlayer(player));
+		if (player_name === ("lb_" + x)) {
+			$('#' + player_name).text('Ian Culverhouse');
+			randomPlayer = 'Ian Culverhouse'
+		} else {
+			randomPlayer = getRandomPlayer(player);
+			$('#' + player_name).text(randomPlayer);
+		}
 
+		return randomPlayer;
 	};
 
 	function loaddata() {
+		var playerName, i;
 		var comp=["rb_c","cb1_c","cb2_c","lb_c","rm_c","cm1_c","cm2_c","lm_c","fw1_c","fw2_c","gk_c"];
 		var players=["rb_p","cb1_p","cb2_p","lb_p","rm_p","cm1_p","cm2_p","lm_p","fw1_p","fw2_p","gk_p"];
 
@@ -203,21 +220,45 @@ function select_game_to_join_step_3() {
 		//show that the first turn is for team 1
 		$('.box.computer_team input').prop('disabled', true).addClass('disabled-button');
 
-		var player_name, i;
+		if (is_creator) {
+			//loading players for player1
+			for(i = 0 ;i < players.length; i++) {
+				playerName = players[i];
+				playersList.player1.push(loadPlayersHelper(playerName, 'player'));
+			}
 
-		//loading players for player
-		for(i = 0 ;i < players.length; i++) {
-			player_name = players[i];
-			loadPlayersHelper(player_name, 'player');
+			//loading players for player2
+			for(i = 0; i < comp.length; i++) {
+				playerName=comp[i];
+				playersList.player2.push(loadPlayersHelper(playerName, 'computer'));
+			}
+
+			//update the other player of the players allocated for this game
+			socket.emit('players_allocation', {
+				'gameName': gameName,
+				'playersList': playersList
+			});
+		} else {
+			player_allocation();
 		}
 
-		//loading players for computer
-		for(var i = 0; i < comp.length; i++) {
-			player_name=comp[i];
-			loadPlayersHelper(player_name, 'computer');
-		}
 	}//loaddata end
 
+	function player_allocation() {
+		debugger;
+		var comp=["rb_c","cb1_c","cb2_c","lb_c","rm_c","cm1_c","cm2_c","lm_c","fw1_c","fw2_c","gk_c"];
+		var players=["rb_p","cb1_p","cb2_p","lb_p","rm_p","cm1_p","cm2_p","lm_p","fw1_p","fw2_p","gk_p"];
+
+		for(i = 0 ;i < players.length; i++) {
+			player_name = players[i];
+			$('#' + player_name).text(playersList.player1[i]);
+		}
+
+		for(i = 0; i < comp.length; i++) {
+			player_name = comp[i];
+			$('#' + player_name).text(playersList.player2[i]);
+		}
+	}
 
 	function select_player(player_name) {
 		var Midfielders_flag=false;
@@ -493,7 +534,7 @@ function select_game_to_join_step_3() {
 			var x=prompt("You won","Thanks for playing");
 			if( (x === "") || (x!== "" )) {
 
-	      socket.broadcast.to(game_name).emit('message', {
+	      socket.broadcast.to(gameName).emit('message', {
 	        'message' : 'player_won',
 	        'data': 'player_won'
 	      });
@@ -502,12 +543,3 @@ function select_game_to_join_step_3() {
 			}
 		},2000);
 	};
-
-	// function gamewon_comp() {
-	// 	setTimeout(function() {
-	// 		var x=prompt("Computer won","Thanks for playing");
-	// 		if((x === "") || (x!=="")) {
-	// 			location.reload();
-	// 		}
-	// 	},2000);
-	// };

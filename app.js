@@ -125,7 +125,7 @@ io.on('connection', function(socket){
     console.log('room ' + gameInfo.gameName + ' was created.');
 
     rooms[gameInfo.gameName] = {};
-    rooms[gameInfo.gameName]["player1"] = gameInfo.playerName;
+    rooms[gameInfo.gameName]['player1'] = gameInfo.playerName;
 
     connected_users[socket.id]['room'] = gameInfo.gameName;
     connected_users[socket.id]['playerName'] = gameInfo.playerName
@@ -142,10 +142,9 @@ io.on('connection', function(socket){
     socket.join(gameInfo.gameName);
     connected_users[socket.id]['room'] = gameInfo.gameName;
     connected_users[socket.id]['playerName'] = gameInfo.playerName;
-
-    rooms[gameInfo.gameName]["player2"] = gameInfo.playerName;
-
-    gameInfo.player2Name = rooms[gameInfo.gameName]["player1"];
+    rooms[gameInfo.gameName]['player2'] = gameInfo.playerName;
+    gameInfo.player2Name = rooms[gameInfo.gameName]['player1'];
+    gameInfo.playersList = rooms[gameInfo.gameName]['playersList'];
     io.to(socket.id).emit('message', {
       'message' : 'join_room',
       'data': gameInfo
@@ -164,6 +163,11 @@ io.on('connection', function(socket){
       'message' : 'player_move',
       'data': player_name
     });
+  });
+
+  socket.on('players_allocation', function(gameInfo) {
+    console.log('players_allocation called: ' + gameInfo.gameName);
+    rooms[gameInfo.gameName]['playersList'] = gameInfo.playersList;
   });
 
   socket.on('update_score', function(score_data) {
