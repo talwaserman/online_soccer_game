@@ -20,6 +20,7 @@ var is_creator = null;	// tell the game if the user is the creator or a joiner
 var playersList = {};	// used to save the list of players randomly generated for this game
 	  playersList.player1 = [];
 		playersList.player2 = [];
+var gameList; // contain the list of available rooms
 /* ---------------------------- */
 
 
@@ -61,6 +62,7 @@ socket.on('message', function(info) {
 			$('.online_pvp_container').addClass('hidden');
 			$('.start_game_container').removeClass('hidden');
 			$('.player_1_input_btn').addClass('hidden');
+			$('audio')[0].play();
 		break;
 
 		case 'player_joined':
@@ -68,6 +70,7 @@ socket.on('message', function(info) {
 			alert('player ' + team_2_name + ' joined the game.');
 			$('#team_2_name').text(team_2_name + ':');
 			$('.waiting-wrapper-overlay').addClass('hidden');
+			$('audio')[0].play();
 		break;
 
 		case 'user_left_room':
@@ -112,6 +115,17 @@ function create_new_online_game() {
 };
 
 function select_game_to_join() {
+	$.ajax({
+		type: 'GET',
+	  url: "/api/room_list",
+	}).done(function(data) {
+		gameList = Object.keys(data.room_list);
+
+		for (var i = 0; i < gameList.length; i++) {
+			$('.game-list').append($('<option>', { value : gameList[i] }).text(gameList[i]));
+		}
+
+	});
   $('.step_1_create_or_select').addClass('hidden');
   $('.step_2_join_game').removeClass('hidden');
 };
@@ -135,7 +149,7 @@ function select_game_to_join_step_3() {
   // join existing room
 	var $joinGame = $('.step_2_join_game');
   socket.emit('join_room', {
-		'gameName':   $joinGame.find('.join_group_name').val(),
+		'gameName':   $joinGame.find('.input-group select').val(),
 		'playerName': $joinGame.find('.player_name').val()
 	});
 };
@@ -307,7 +321,7 @@ function select_game_to_join_step_3() {
 			if(player_name=="lb_p")//IanCulverhouse
 			{
 				Pwrong_selection_count++;
-				if(Pturn_count<=8) {
+				if(Pturn_count<=5) {
 					if(Pwrong_selection_count === 1) {
 						document.getElementById('screen').src="images/"+yellow[Math.floor(Math.random() * yellow.length)];
 						document.getElementById("team_1_name").style.color="yellow";

@@ -76,7 +76,7 @@ var red=["r1.jpg","r2.jpg","r3.jpg","r4.jpg"];
 			if(player_name=="lb_p")//IanCulverhouse
 			{
 				Pwrong_selection_count++;
-				if(Pturn_count<=8)
+				if(Pturn_count<=5)
 				{
 					if(Pwrong_selection_count==1)
 					{
@@ -181,6 +181,7 @@ var red=["r1.jpg","r2.jpg","r3.jpg","r4.jpg"];
 	{
 		var TeamName=prompt("Please enter your Team name", "");
 		document.getElementById('team_name').innerHTML=TeamName + ": ";
+		$('audio')[0].play();
 	}
 	function Toogle_inputs()//disable/enable inputs
 	{

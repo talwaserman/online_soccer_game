@@ -21,6 +21,8 @@ var app = express();
 var io           = io();
 app.io           = io;
 
+app.set('rooms', rooms);
+
 var env = process.env.NODE_ENV || 'development';
 app.locals.ENV = env;
 app.locals.ENV_DEVELOPMENT = env == 'development';
@@ -42,6 +44,11 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// --- API --- //
+app.get('/api/room_list', function(req, res) {
+  res.status(200).send({'room_list':rooms});
+});
 
 app.use('/', routes);
 app.use('/users', users);

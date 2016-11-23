@@ -147,7 +147,7 @@ var team_2_name = 'team 2: ';
 			if(player_name=="lb_p")//IanCulverhouse
 			{
 				Pwrong_selection_count++;
-				if(Pturn_count<=8) {
+				if(Pturn_count<=5) {
 					if(Pwrong_selection_count === 1) {
 						document.getElementById('screen').src="images/"+yellow[Math.floor(Math.random() * yellow.length)];
 						document.getElementById("team_1_name").style.color="yellow";

@@ -136,7 +136,7 @@ var TeamName = 'player: ';
 			if(player_name === "lb_p")//IanCulverhouse
 			{
 				Pwrong_selection_count++;
-				if(Pturn_count <= 8)
+				if(Pturn_count <= 5)
 				{
 					if(Pwrong_selection_count === 1)
 					{
@@ -252,6 +252,7 @@ var TeamName = 'player: ';
 		TeamName = prompt("Please enter the name of team 1", "");
 		if (!TeamName) { TeamName = 'player'}
 		$('#team_name').text(TeamName +': ');
+		$('audio')[0].play();
 	}
 
 	//disable/enable inputs
