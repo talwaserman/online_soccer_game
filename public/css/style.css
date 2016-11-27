@@ -102,8 +102,8 @@ button:focus {
   background: #fff;
   border-radius: 5px;
   padding: 10px 20px;
-  width: 500px;
-  height: 250px;
+  width: 575px;
+  min-height: 180px;
 }
 .online_pvp_container button {
   width: 100px;
