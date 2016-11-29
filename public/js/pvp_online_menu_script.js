@@ -101,6 +101,13 @@ socket.on('message', function(info) {
 
 		case 'player_switch':
 			$('#' + info.data.selector).text(info.data.newName);
+			$('#' + info.data.selector).css({
+						'color': 'white',
+						'font-size': '1.0em'
+			});
+			$('#screen').attr('src', 'images/stadium.jpg');
+			$('.box.player_team input').prop('disabled', false).removeClass('disabled-button');
+			Whos_turn = 'player';
 		break;
 
 		case 'no_room_available':
@@ -396,26 +403,26 @@ function select_game_to_join_step_3() {
 			// the move that this player made
       if (update_other_player) {
 				socket.emit('player_move', player_name);
+				setTimeout(function()
+				{
+					var newPlayerName = switchRandomPlayer(player, $('#' + player_name).text());
+					$('#' + player_name).text(newPlayerName);
+					$('#' + player_name).css({
+						'color': 'white',
+						'font-size': '1.0em'
+					});
+					$('#screen').attr('src', 'images/stadium.jpg');
+
+					socket.emit('player_switch', {
+						'selector': player_name,
+						'newName': newPlayerName
+					});
+
+				},1000);
+
 			} else {
 				update_other_player = true;
 			}
-
-			setTimeout(function()
-			{
-				var newPlayerName = switchRandomPlayer(player, $('#' + player_name).text());
-				$('#' + player_name).text(newPlayerName);
-				$('#' + player_name).css({
-					'color': 'white',
-					'font-size': '1.0em'
-				});
-				$('#screen').attr('src', 'images/stadium.jpg');
-
-				socket.emit('player_switch', {
-					'selector': player_name,
-					'newName': newPlayerName
-				});
-
-			},1000);
 
 	}; //select_player end
 
@@ -531,26 +538,32 @@ function select_game_to_join_step_3() {
 		// the move that this player made
 		if (update_other_player) {
 			socket.emit('player_move', player_name);
+			setTimeout(function()
+			{
+				var newPlayerName = switchRandomPlayer(player, $('#' + player_name).text());
+				$('#' + player_name).text(newPlayerName);
+				$('#' + player_name).css({
+					'color': 'white',
+					'font-size': '1.0em'
+				});
+				$('#screen').attr('src', 'images/stadium.jpg');
+
+				Whos_turn = 'player';
+
+				// enable the select buttons for player, it's his turn
+				$('.box.player_team input').prop('disabled', false).removeClass('disabled-button');
+				$('.box.computer_team input').prop('disabled', true).addClass('disabled-button');
+
+				socket.emit('player_switch', {
+					'selector': player_name,
+					'newName': newPlayerName
+				});
+
+			},1000);
 		} else {
 			update_other_player = true;
 		}
 
-		setTimeout(function()
-		{
-			$('#' + player_name).text(switchRandomPlayer(player, $('#' + player_name).text()))
-			.css({
-				'color': 'white',
-				'font-size': '1.0em'
-			});
-			$('#screen').attr('src', 'images/stadium.jpg');
-
-			Whos_turn = 'player';
-
-			// enable the select buttons for player, it's his turn
-			$('.box.player_team input').prop('disabled', false).removeClass('disabled-button');
-			$('.box.computer_team input').prop('disabled', true).addClass('disabled-button');
-
-		},1000);
 	}; //select_player2 end
 
 	function gameover(name) {
